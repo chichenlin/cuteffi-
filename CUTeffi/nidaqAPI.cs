@@ -264,7 +264,7 @@ namespace CUTeffi
                 Console.Write(indexP + "  " + varSP + "  " + vecTime[0] + "  ");
                 Console.WriteLine(ts2);
 
-                analogInReader.BeginMemoryOptimizedReadWaveform(Convert.ToInt32(1280),
+                analogInReader.BeginMemoryOptimizedReadWaveform(Convert.ToInt32(6400),
                     analogCallback, myTask, data);
                 int AAA = 1;
             }
