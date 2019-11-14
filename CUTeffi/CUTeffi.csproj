@@ -58,11 +58,16 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\MWArray.dll</HintPath>
     </Reference>
-    <Reference Include="NationalInstruments.Common, Version=17.5.40.49153, Culture=neutral, PublicKeyToken=dc6ad606294fc298, processorArchitecture=MSIL" />
-    <Reference Include="NationalInstruments.DAQmx, Version=19.0.45.2, Culture=neutral, PublicKeyToken=4febd62461bf11a4, processorArchitecture=AMD64" />
-    <Reference Include="NIDAQ, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="NationalInstruments.Common, Version=17.5.40.49153, Culture=neutral, PublicKeyToken=dc6ad606294fc298, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\NIDAQ.dll</HintPath>
+      <HintPath>.\NationalInstruments.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="NationalInstruments.DAQmx, Version=19.5.45.0, Culture=neutral, PublicKeyToken=4febd62461bf11a4, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\NationalInstruments.DAQmx.dll</HintPath>
+    </Reference>
+    <Reference Include="NIDAQ">
+      <HintPath>.\NIDAQ.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
