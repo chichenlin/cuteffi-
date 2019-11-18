@@ -35,6 +35,7 @@ namespace CUTeffi
         
         public StreamWriter SW_RMSData;
         public StreamWriter SW_State;
+        public StreamWriter SW_State2;
 
         [STAThread]
         public void StartDAQ(double a)
@@ -56,13 +57,14 @@ namespace CUTeffi
             double EVN = 0.004;
             double[] chan = new double[4] { 1, 1, 0, 0 };
             ////
-            indexP = 1;
+            indexP = 0;
             iii = 0;
             ////
             
             SW_RMSData = new StreamWriter(System.Environment.CurrentDirectory + "\\logData\\RMSData.txt");
             SW_State = new StreamWriter(System.Environment.CurrentDirectory + "\\logData\\State.txt");
-            
+            SW_State2 = new StreamWriter(System.Environment.CurrentDirectory + "\\logData\\State2.txt");
+
             for (int i = 0; i < chan.Length; i++)
             {
                 if (chan[i] == 1)
@@ -96,6 +98,7 @@ namespace CUTeffi
             // Dispose of the task
             SW_RMSData.Dispose();
             SW_State.Dispose();
+            SW_State2.Dispose();
 
 
             runningTask = null;
@@ -203,19 +206,24 @@ namespace CUTeffi
                 //SW_RMSData.Write(",");
                 //SW_RMSData.WriteLine(rms_vibration);
 
-                double[] vecSP = new double[12];
+                //double[] vecSP = new double[12];
+                double[] vecSP = new double[13];
                 if (indexMaterial == 1)
                 {
-                    double[] vecSP2 = new double[] { 0, 2000, 750, 2500, 250, 1750, 1000, 2750, 1250, 2250, 1500, 500 };
-                    for (int i = 0; i < 12; i++)
-                    {
+                    //double[] vecSP2 = new double[] { 0, 2000, 750, 2500, 250, 1750, 1000, 2750, 1250, 2250, 1500, 500 };
+                    double[] vecSP2 = new double[] { 0,0, 2000, 750, 2500, 250, 1750, 1000, 2750, 1250, 2250, 1500, 500 };
+                    //for (int i = 0; i < 12; i++)
+                    for (int i = 0; i < 13; i++)
+                        {
                         vecSP[i] = SPmax - vecSP2[i];//---------------------------------------------------------------------------------------------
                     }
                 }
                 else if (indexMaterial == 2)
                 {
-                    double[] vecSP2 = new double[] { 0, 1600, 600, 2000, 200, 1400, 800, 2200, 1000, 1800, 1200, 400 };
-                    for (int i = 0; i < 12; i++)
+                    //double[] vecSP2 = new double[] { 0, 1600, 600, 2000, 200, 1400, 800, 2200, 1000, 1800, 1200, 400 };
+                    double[] vecSP2 = new double[] { 0,0, 1600, 600, 2000, 200, 1400, 800, 2200, 1000, 1800, 1200, 400 };
+                    //for (int i = 0; i < 12; i++)
+                    for (int i = 0; i < 13; i++)
                     {
                         vecSP[i] = SPmax - vecSP2[i];//---------------------------------------------------------------------------------------------
                     }
@@ -224,66 +232,107 @@ namespace CUTeffi
                 //{
                 //    vecSP[i - 1] = SPmax - 250 * (13 - i - 1);//---------------------------------------------------------------------------------------------
                 //}
+                SW_RMSData.Write(vecTime[0]);
+                SW_RMSData.Write(",");
+                SW_RMSData.Write(vecSP[indexP]);
+                SW_RMSData.Write(",");
+                SW_RMSData.WriteLine(rms_vibration);
+
+
+
+
+
+                double threshold = CUTeffiForm.threshold;
+                if (rms_vibration > threshold) // 閥值定義：轉與不轉振動量大小
+                {
+                    iii++; 
+                    if (iii >= 3)
+                    {
+                        iii = 0;
+                        indexP++;
+                        SW_State.WriteLine(vecTime[0]);
+                        SW_State2.WriteLine("start");
+                    }
+                    if(rms_vibration<=threshold)
+                    {
+                        SW_State.WriteLine(vecTime[0]);
+                        SW_State2.WriteLine("stop");
+                    }
+                    if (indexP == vecSP.Length)
+                    {
+                        SW_State.WriteLine(vecTime[0]);
+                        SW_State2.WriteLine("end");
+                        StopDAQ();
+                        SPOptimization(SPmax);
+                        return;
+                    } 
+                    Console.Write(indexP + "  " + vecSP[indexP] + "  " + vecTime[0] + "  " + rms_vibration + " ");
+                    //Console.Write(indexP + "  " + vecTime[0] + "  " + rms_vibration + " ");
+                }
+                else
+                {
+                    Console.WriteLine("Spindle stop now");
+                    
+                }
+                
+
+
+
+
                 ////////////////////////////////////////////////////
                 //double[] varSPP = new double[vecSP.Length];
                 //for (int i = 0; i < vecSP.Length; i++)
                 //{
                 //    varSPP[i] = vecSP[i];
                 //}
-                double threshold = CUTeffiForm.threshold;
-                if (rms_vibration > threshold) // 閥值定義：轉與不轉振動量大小
-                {
-                    
-                    //if (varSP >= 800)
-                    //{
-                    if (indexP == 0)
-                    {
-                        indexP = 1;
-                    }
-                    else if (indexP == vecSP.Length +1)
-                    {
-                        //if (Math.Abs(varSP - vecSP[11]) >= 1000)indexP >= 12 && rms_vibration < 6
-                        //if (vecSP[indexP-2] == 13000)
-                        //    {
-                                SW_State.WriteLine(vecTime[0]);
-                                StopDAQ();
-                                SPOptimization(SPmax);
-                        return;
-                        //}
-                    }
-                    varSP = vecSP[indexP - 1];
-                    if (indexP <= vecSP.Length)
-                        {
-                            
-                            if (Math.Abs(varSP - vecSP[indexP-1]) <= 120)//Math.Abs(varSP - vecSP[indexP - 1]) <= 120    varSPP[indexP - 1] == vecSP[indexP - 1]
-                            {
-                                    iii = iii + 1;
-                                    Console.WriteLine(iii);
-                                    if (iii == 10)
-                                    {
-                                        iii = 0;
-                                        indexP = indexP + 1;
-                                        SW_State.WriteLine(vecTime[0]);
-                                        //Console.WriteLine(indexP + " , " + rms_vibration + " , " + varSPP[indexP-1] + " , " + vecSP[indexP-1] + " , " + iii);
-                                    }
-                            }
-                        //}
-                    }
-                    SW_RMSData.Write(vecTime[0]);
-                    SW_RMSData.Write(",");
-                    SW_RMSData.Write(varSP);
-                    SW_RMSData.Write(",");
-                    SW_RMSData.WriteLine(rms_vibration);
-                    Console.Write(indexP + "  " + varSP + "  " + vecTime[0] + "  " + rms_vibration + " ");
-                    threshold = CUTeffiForm.threshold;
-                    
-                    
-                }
-                else
-                {
-                    Console.WriteLine("Spindle stop now");
-                }
-                
+                //    if (indexP == 0)
+                //    {
+                //        indexP = 1;
+                //    }
+                //    else if (indexP == vecSP.Length +1)
+                //    {
+                //        //if (Math.Abs(varSP - vecSP[11]) >= 1000)indexP >= 12 && rms_vibration < 6
+                //        //if (vecSP[indexP-2] == 13000)
+                //        //    {
+                //                SW_State.WriteLine(vecTime[0]);
+                //                StopDAQ();
+                //                SPOptimization(SPmax);
+                //        return;
+                //        //}
+                //    }
+                //    varSP = vecSP[indexP - 1];
+                //    if (indexP <= vecSP.Length)
+                //        {
+
+                //            if (Math.Abs(varSP - vecSP[indexP-1]) <= 120)//Math.Abs(varSP - vecSP[indexP - 1]) <= 120    varSPP[indexP - 1] == vecSP[indexP - 1]
+                //            {
+                //                    iii = iii + 1;
+                //                    Console.WriteLine(iii);
+                //                    if (iii == 10)
+                //                    {
+                //                        iii = 0;
+                //                        indexP = indexP + 1;
+                //                        SW_State.WriteLine(vecTime[0]);
+                //                        //Console.WriteLine(indexP + " , " + rms_vibration + " , " + varSPP[indexP-1] + " , " + vecSP[indexP-1] + " , " + iii);
+                //                    }
+                //            }
+                //        //}
+                //    }
+                //    SW_RMSData.Write(vecTime[0]);
+                //    SW_RMSData.Write(",");
+                //    SW_RMSData.Write(varSP);
+                //    SW_RMSData.Write(",");
+                //    SW_RMSData.WriteLine(rms_vibration);
+                //    Console.Write(indexP + "  " + varSP + "  " + vecTime[0] + "  " + rms_vibration + " ");
+                //    threshold = CUTeffiForm.threshold;
+
+
+                //}
+                //else
+                //{
+                //    Console.WriteLine("Spindle stop now");
+                //}
+
                 ///////////////////////////////////////////////////////////////////////////
                 //if (rms_vibration >= 0.2)
                 //{
