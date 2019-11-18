@@ -46,6 +46,7 @@
             this.buttonTest = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.buttonStop = new System.Windows.Forms.Button();
+            this.textBox9 = new System.Windows.Forms.TextBox();
             this.panelSetting = new System.Windows.Forms.Panel();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.checkBox3 = new System.Windows.Forms.CheckBox();
@@ -277,9 +278,19 @@
             this.buttonStop.UseVisualStyleBackColor = true;
             this.buttonStop.Click += new System.EventHandler(this.buttonStop_Click);
             // 
+            // textBox9
+            // 
+            this.textBox9.Location = new System.Drawing.Point(15, 368);
+            this.textBox9.Name = "textBox9";
+            this.textBox9.Size = new System.Drawing.Size(100, 27);
+            this.textBox9.TabIndex = 17;
+            this.textBox9.Text = "5";
+            this.textBox9.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
             // panelSetting
             // 
             this.panelSetting.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelSetting.Controls.Add(this.textBox9);
             this.panelSetting.Controls.Add(this.checkBox4);
             this.panelSetting.Controls.Add(this.checkBox3);
             this.panelSetting.Controls.Add(this.label30);
@@ -318,7 +329,7 @@
             // checkBox4
             // 
             this.checkBox4.AutoSize = true;
-            this.checkBox4.Enabled = false;
+            this.checkBox4.Cursor = System.Windows.Forms.Cursors.Default;
             this.checkBox4.Location = new System.Drawing.Point(197, 206);
             this.checkBox4.Name = "checkBox4";
             this.checkBox4.Size = new System.Drawing.Size(73, 23);
@@ -332,7 +343,6 @@
             this.checkBox3.AutoSize = true;
             this.checkBox3.Checked = true;
             this.checkBox3.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox3.Enabled = false;
             this.checkBox3.Location = new System.Drawing.Point(118, 206);
             this.checkBox3.Name = "checkBox3";
             this.checkBox3.Size = new System.Drawing.Size(73, 23);
@@ -758,6 +768,7 @@
         private System.Windows.Forms.Label label30;
         private System.Windows.Forms.CheckBox checkBox4;
         private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.TextBox textBox9;
     }
 }
 

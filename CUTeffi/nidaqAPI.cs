@@ -11,6 +11,7 @@ using MathNet.Numerics;
 using System.IO;
 using System.Threading;
 using CUTeffi;
+
 namespace CUTeffi
 {
     class nidaqAPI
@@ -31,7 +32,7 @@ namespace CUTeffi
         int indexP;
         double SPmax;
         int iii;
-
+        
         public StreamWriter SW_RMSData;
         public StreamWriter SW_State;
 
@@ -55,13 +56,13 @@ namespace CUTeffi
             double EVN = 0.004;
             double[] chan = new double[4] { 1, 1, 0, 0 };
             ////
-            indexP = 0;
+            indexP = 1;
             iii = 0;
             ////
-
+            
             SW_RMSData = new StreamWriter(System.Environment.CurrentDirectory + "\\logData\\RMSData.txt");
             SW_State = new StreamWriter(System.Environment.CurrentDirectory + "\\logData\\State.txt");
-
+            
             for (int i = 0; i < chan.Length; i++)
             {
                 if (chan[i] == 1)
@@ -73,7 +74,7 @@ namespace CUTeffi
                 }
 
             }
-
+            
             myTask.Timing.ConfigureSampleClock("", Convert.ToDouble(12800),
                 SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, Convert.ToInt32(1280));
 
@@ -105,6 +106,7 @@ namespace CUTeffi
             //iii = 0;
             ////
         }
+        
         
         private void AnalogInCallback(IAsyncResult ar)
         {
@@ -144,48 +146,49 @@ namespace CUTeffi
 
 
                 ////////////////////////////FFT////////////////////////////////////////
-                double[] d0Copy = new double[d0.Length * 10];
+                //double[] d0Copy = new double[d0.Length * 10];
 
-                for (int i = 0; i < d0.Length; i++)
-                {
-                    d0Copy[i] = d0[i];
-                }
-                double[] realdata = d0Copy;
-                double[] imagdata = new double[d0Copy.Length];
+                //for (int i = 0; i < d0.Length; i++)
+                //{
+                //    d0Copy[i] = d0[i];
+                //}
+                //double[] realdata = d0Copy;
+                //double[] imagdata = new double[d0Copy.Length];
 
-                int numFFT = Convert.ToInt16(Math.Floor(Convert.ToDecimal(d0Copy.Length / 2)));
-                double[] vecFFT = new double[numFFT];
-                double[] vecFqtmp = new double[numFFT];
+                //int numFFT = Convert.ToInt16(Math.Floor(Convert.ToDecimal(d0Copy.Length / 2)));
+                //double[] vecFFT = new double[numFFT];
+                //double[] vecFqtmp = new double[numFFT];
 
-                for(int i = 1; i<numFFT; i++)
-                {
-                    vecFqtmp[i] = vecFqtmp[i - 1] + (varFs / d0Copy.Length);
-                }                
-                
-                MathNet.Numerics.IntegralTransforms.Fourier.Forward(realdata, imagdata, MathNet.Numerics.IntegralTransforms.FourierOptions.Matlab);
+                //for(int i = 1; i<numFFT; i++)
+                //{
+                //    vecFqtmp[i] = vecFqtmp[i - 1] + (varFs / d0Copy.Length);
+                //}                
 
-                for (int i = 0; i < numFFT; i++)
-                {
-                    vecFFT[i] = Math.Sqrt(Math.Pow(realdata[i], 2) + Math.Pow(imagdata[i], 2));
-                }
+                //MathNet.Numerics.IntegralTransforms.Fourier.Forward(realdata, imagdata, MathNet.Numerics.IntegralTransforms.FourierOptions.Matlab);
 
-                double varSP;
-                if(indexP == 0)
-                {
-                    int numvecFFT2 = Convert.ToInt16(Math.Floor((SPmax + 200) / 60) - 10);
-                    double[] vecFFT2 = new double[numvecFFT2];
-                    Array.Copy(vecFFT, 10, vecFFT2, 0, numvecFFT2);
-                    int loc = vecFFT2.ToList().IndexOf(vecFFT2.Max());
-                    varSP = vecFqtmp[loc + 10] * 60;
-                }
-                else
-                {
-                    int numvecFFT2 = Convert.ToInt16(Math.Floor((SPmax + 200) / 60) - 10);
-                    double[] vecFFT2 = new double[numvecFFT2];
-                    Array.Copy(vecFFT, 10, vecFFT2, 0, numvecFFT2);
-                    int loc = vecFFT2.ToList().IndexOf(vecFFT2.Max());
-                    varSP = vecFqtmp[loc + 10] * 60;
-                }
+                //for (int i = 0; i < numFFT; i++)
+                //{
+                //    vecFFT[i] = Math.Sqrt(Math.Pow(realdata[i], 2) + Math.Pow(imagdata[i], 2));
+                //}
+
+                //double varSP;
+                //if(indexP == 0)
+                //{
+                //    int numvecFFT2 = Convert.ToInt16(Math.Floor((SPmax + 200) / 60) - 10);
+                //    double[] vecFFT2 = new double[numvecFFT2];
+                //    Array.Copy(vecFFT, 10, vecFFT2, 0, numvecFFT2);
+                //    int loc = vecFFT2.ToList().IndexOf(vecFFT2.Max());
+                //    varSP = vecFqtmp[loc + 10] * 60;
+                //}
+                //else
+                //{
+                //    int numvecFFT2 = Convert.ToInt16(Math.Floor((SPmax + 200) / 60) - 10);
+                //    double[] vecFFT2 = new double[numvecFFT2];
+                //    Array.Copy(vecFFT, 10, vecFFT2, 0, numvecFFT2);
+                //    int loc = vecFFT2.ToList().IndexOf(vecFFT2.Max());
+                //    varSP = vecFqtmp[loc + 10] * 60;
+                //}
+                /////////////////////
                 //{
                 //    int numvecFFT2 = Convert.ToInt16(Math.Floor((SPmax + 1000) / 60) - Math.Floor((SPmax - 5000) / 60) - 1);
                 //    double[] vecFFT2 = new double[numvecFFT2];
@@ -193,12 +196,12 @@ namespace CUTeffi
                 //    int loc = vecFFT2.ToList().IndexOf(vecFFT2.Max());
                 //    varSP = vecFqtmp[loc + Convert.ToInt16(Math.Floor((SPmax - 5000) / 60) - 1)] * 60;
                 //}
-
-                SW_RMSData.Write(vecTime[0]);
-                SW_RMSData.Write(",");
-                SW_RMSData.Write(varSP);
-                SW_RMSData.Write(",");
-                SW_RMSData.WriteLine(rms_vibration);
+                double varSP;
+                //SW_RMSData.Write(vecTime[0]);
+                //SW_RMSData.Write(",");
+                //SW_RMSData.Write(varSP);
+                //SW_RMSData.Write(",");
+                //SW_RMSData.WriteLine(rms_vibration);
 
                 double[] vecSP = new double[12];
                 if (indexMaterial == 1)
@@ -222,49 +225,59 @@ namespace CUTeffi
                 //    vecSP[i - 1] = SPmax - 250 * (13 - i - 1);//---------------------------------------------------------------------------------------------
                 //}
                 ////////////////////////////////////////////////////
-                double[] varSPP = new double[vecSP.Length];
-                for (int i = 0; i < vecSP.Length; i++)
+                //double[] varSPP = new double[vecSP.Length];
+                //for (int i = 0; i < vecSP.Length; i++)
+                //{
+                //    varSPP[i] = vecSP[i];
+                //}
+                double threshold = CUTeffiForm.threshold;
+                if (rms_vibration > threshold) // 閥值定義：轉與不轉振動量大小
                 {
-                    varSPP[i] = vecSP[i];
-                }
-
-                if (rms_vibration > 5) // 閥值定義：轉與不轉振動量大小
-                {
-                    if (varSPP[indexP] >= 800)
+                    
+                    //if (varSP >= 800)
+                    //{
+                    if (indexP == 0)
                     {
-                        if (indexP == 0)
-                        {
-                            indexP = 1;
-                        }
-                        else if (indexP == vecSP.Length + 1)
-                        {
-                            //if (Math.Abs(varSPP[11] - vecSP[11]) >= 1000)
-                                if(indexP>=12 && rms_vibration <6)
-                            {
+                        indexP = 1;
+                    }
+                    else if (indexP == vecSP.Length +1)
+                    {
+                        //if (Math.Abs(varSP - vecSP[11]) >= 1000)indexP >= 12 && rms_vibration < 6
+                        //if (vecSP[indexP-2] == 13000)
+                        //    {
                                 SW_State.WriteLine(vecTime[0]);
                                 StopDAQ();
-
-
                                 SPOptimization(SPmax);
-
-                            }
-                        }
-
-                        if (indexP <= vecSP.Length)
-                        {
-                            if (varSPP[indexP - 1] == vecSP[indexP - 1])//Math.Abs(varSPP[indexP - 1] - vecSP[indexP - 1]) <= 120
-                            {
-                                iii = iii + 1;
-                                if (iii == 5)
-                                {
-                                    iii = 0;
-                                    indexP = indexP + 1;
-                                    SW_State.WriteLine(vecTime[0]);
-                                    //Console.WriteLine(indexP + " , " + rms_vibration + " , " + varSPP[indexP-1] + " , " + vecSP[indexP-1] + " , " + iii);
-                                }
-                            }
-                        }
+                        return;
+                        //}
                     }
+                    varSP = vecSP[indexP - 1];
+                    if (indexP <= vecSP.Length)
+                        {
+                            
+                            if (Math.Abs(varSP - vecSP[indexP-1]) <= 120)//Math.Abs(varSP - vecSP[indexP - 1]) <= 120    varSPP[indexP - 1] == vecSP[indexP - 1]
+                            {
+                                    iii = iii + 1;
+                                    Console.WriteLine(iii);
+                                    if (iii == 10)
+                                    {
+                                        iii = 0;
+                                        indexP = indexP + 1;
+                                        SW_State.WriteLine(vecTime[0]);
+                                        //Console.WriteLine(indexP + " , " + rms_vibration + " , " + varSPP[indexP-1] + " , " + vecSP[indexP-1] + " , " + iii);
+                                    }
+                            }
+                        //}
+                    }
+                    SW_RMSData.Write(vecTime[0]);
+                    SW_RMSData.Write(",");
+                    SW_RMSData.Write(varSP);
+                    SW_RMSData.Write(",");
+                    SW_RMSData.WriteLine(rms_vibration);
+                    Console.Write(indexP + "  " + varSP + "  " + vecTime[0] + "  " + rms_vibration + " ");
+                    threshold = CUTeffiForm.threshold;
+                    
+                    
                 }
                 else
                 {
@@ -315,10 +328,10 @@ namespace CUTeffi
 
                 sw.Stop();
                 TimeSpan ts2 = sw.Elapsed;
-                Console.Write(indexP + "  " + varSP + "  " + vecTime[0] + "  ");
+                //Console.Write(indexP + "  " + varSP + "  " + vecTime[0] + "  ");
                 Console.WriteLine(ts2);
 
-                analogInReader.BeginMemoryOptimizedReadWaveform(Convert.ToInt32(1280),
+                analogInReader.BeginMemoryOptimizedReadWaveform(Convert.ToInt32(3200),
                     analogCallback, myTask, data);
                 int AAA = 1;
             }
@@ -361,11 +374,11 @@ namespace CUTeffi
                 //Console.WriteLine(DataRead[counter]);
                 counter1++;
             }
-            double[] vecState = new double[counter1];
+            double[] vecState = new double[counter1-1];
 
 
 
-            for (int i = 0; i < counter1; i++)
+            for (int i = 0; i < vecState.Length; i++)//counter1
             {
                 vecState[i] = DataRead1[i];
             }
@@ -482,7 +495,7 @@ namespace CUTeffi
             }
 
             double[] Crms = new double[vecSP.Length];
-            for (int i = 1; i <= vecSP.Length; i++)
+            for (int i = 1; i < vecSP.Length; i++)
             {
                 int varRange = vecLoc[i] - vecLoc[i - 1];
                 int varLoc1 = Convert.ToInt32(Math.Floor(varRange * 0.8));
@@ -508,7 +521,7 @@ namespace CUTeffi
             SplashScreen.cut.panelupdate(A);
             //CUTeffiForm CE = new CUTeffiForm();
             //CE.panelupdate(A);
-            
+
             //label24.Text = Convert.ToString(A[0]);
             //label4.Text = Convert.ToString(A[1]);
             //label5.Text = Convert.ToString(A[2]);

@@ -24,6 +24,7 @@ namespace CUTeffi
         public static int indexMaterial = 1; // 1 = 鋁合金,  2 = 不鏽鋼
         public double OperatingSPmax;
         public static int varNtest = 12;
+        public static double threshold;
 
         //public static StreamWriter SW_RMSData;
         //public static StreamWriter SW_State;
@@ -41,7 +42,7 @@ namespace CUTeffi
             this.Size = new Size(416, 539);
             panelSetting.Location = new Point(0, 50);
             initialCUTeffi();
-
+           
         }
 
         private void statepanel(int indexProgramState)
@@ -129,9 +130,10 @@ namespace CUTeffi
             //A[1] = 12750;
             //A[2] = 10750;
             //A[3] = 13500;
+            threshold = Convert.ToDouble(textBox9.Text);
 
             nidaq.StartDAQ(OperatingSPmax);
-
+            
             //nidaq.AA();
 
             //MWArray[] result_startDAQ = startDAQ.NIDAQ(2, 2, OperatingSPmax);
@@ -431,7 +433,7 @@ namespace CUTeffi
             checkBox1.Enabled = false;
             checkBox2.Enabled = false;
             textBox2.Enabled = false;
-            textBox3.Enabled = true;
+            textBox3.Enabled = false;
             textBox4.Enabled = false;
 
             textBox2.Text = "800";
