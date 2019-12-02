@@ -25,6 +25,8 @@ namespace CUTeffi
         public double OperatingSPmax;
         public static int varNtest = 12;
         public static double threshold;
+        public static TextBox RMStextbox;//及時RMS
+
 
         //public static StreamWriter SW_RMSData;
         //public static StreamWriter SW_State;
@@ -41,6 +43,7 @@ namespace CUTeffi
             InitializeComponent();
             this.Size = new Size(416, 539);
             panelSetting.Location = new Point(0, 50);
+            RMStextbox = this.textBox10;//及時RMS
             initialCUTeffi();
            
         }
@@ -113,7 +116,7 @@ namespace CUTeffi
         //---------------------------------------------------------------------------------------//
         //------------------------------------- start test ---------------------------------------//
         //---------------------------------------------------------------------------------------//
-        private void button3_Click(object sender, EventArgs e)  //  開始測試鈕
+        private void buttonTest_Click(object sender, EventArgs e)  //  開始測試鈕
         {
             buttonTest.Visible = false;
             buttonStop.Visible = true;
@@ -130,10 +133,14 @@ namespace CUTeffi
             //A[1] = 12750;
             //A[2] = 10750;
             //A[3] = 13500;
-            threshold = Convert.ToDouble(textBox9.Text);
 
+            threshold = Convert.ToDouble(textBox9.Text);
+            
             nidaq.StartDAQ(OperatingSPmax);
             
+            
+
+
             //nidaq.AA();
 
             //MWArray[] result_startDAQ = startDAQ.NIDAQ(2, 2, OperatingSPmax);
@@ -343,7 +350,7 @@ namespace CUTeffi
                     sw.Write(" RPM, ");
                     sw.Write("F: ");
                     sw.Write(SaveFeed[0]);
-                    sw.WriteLine(" mm/flute");
+                    sw.WriteLine(" mm/min");
                     sw.WriteLine("");
                     sw.WriteLine("其他參數");
 
@@ -355,7 +362,7 @@ namespace CUTeffi
                         sw.Write(" RPM, ");
                         sw.Write("F: ");
                         sw.Write(SaveFeed[i]);
-                        sw.WriteLine(" mm/flute");
+                        sw.WriteLine(" mm/min");
                     }
                 }
 

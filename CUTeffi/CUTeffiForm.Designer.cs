@@ -48,6 +48,9 @@
             this.buttonStop = new System.Windows.Forms.Button();
             this.textBox9 = new System.Windows.Forms.TextBox();
             this.panelSetting = new System.Windows.Forms.Panel();
+            this.label32 = new System.Windows.Forms.Label();
+            this.label31 = new System.Windows.Forms.Label();
+            this.textBox10 = new System.Windows.Forms.TextBox();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.label30 = new System.Windows.Forms.Label();
@@ -254,7 +257,7 @@
             this.buttonTest.TabIndex = 1;
             this.buttonTest.Text = "開始測試";
             this.buttonTest.UseVisualStyleBackColor = true;
-            this.buttonTest.Click += new System.EventHandler(this.button3_Click);
+            this.buttonTest.Click += new System.EventHandler(this.buttonTest_Click);
             // 
             // label1
             // 
@@ -284,12 +287,15 @@
             this.textBox9.Name = "textBox9";
             this.textBox9.Size = new System.Drawing.Size(100, 27);
             this.textBox9.TabIndex = 17;
-            this.textBox9.Text = "5";
+            this.textBox9.Text = "12";
             this.textBox9.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // panelSetting
             // 
             this.panelSetting.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelSetting.Controls.Add(this.label32);
+            this.panelSetting.Controls.Add(this.label31);
+            this.panelSetting.Controls.Add(this.textBox10);
             this.panelSetting.Controls.Add(this.textBox9);
             this.panelSetting.Controls.Add(this.checkBox4);
             this.panelSetting.Controls.Add(this.checkBox3);
@@ -325,6 +331,34 @@
             this.panelSetting.Size = new System.Drawing.Size(400, 400);
             this.panelSetting.TabIndex = 2;
             this.panelSetting.Visible = false;
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(131, 346);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(43, 19);
+            this.label32.TabIndex = 31;
+            this.label32.Text = "RMS";
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(11, 346);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(79, 19);
+            this.label31.TabIndex = 31;
+            this.label31.Text = "threshold";
+            // 
+            // textBox10
+            // 
+            this.textBox10.Enabled = false;
+            this.textBox10.Location = new System.Drawing.Point(135, 368);
+            this.textBox10.Name = "textBox10";
+            this.textBox10.Size = new System.Drawing.Size(100, 27);
+            this.textBox10.TabIndex = 30;
+            this.textBox10.Text = "none";
+            this.textBox10.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // checkBox4
             // 
@@ -589,7 +623,6 @@
             this.checkBox2.TabIndex = 1;
             this.checkBox2.Text = "自訂";
             this.checkBox2.UseVisualStyleBackColor = true;
-            this.checkBox2.Visible = false;
             this.checkBox2.Click += new System.EventHandler(this.checkBox2_Click);
             // 
             // checkBox1
@@ -603,7 +636,6 @@
             this.checkBox1.TabIndex = 0;
             this.checkBox1.Text = "預設";
             this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.Visible = false;
             this.checkBox1.Click += new System.EventHandler(this.checkBox1_Click);
             // 
             // panel2
@@ -769,6 +801,9 @@
         private System.Windows.Forms.CheckBox checkBox4;
         private System.Windows.Forms.CheckBox checkBox3;
         private System.Windows.Forms.TextBox textBox9;
+        private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.Label label32;
+        public System.Windows.Forms.TextBox textBox10;
     }
 }
 

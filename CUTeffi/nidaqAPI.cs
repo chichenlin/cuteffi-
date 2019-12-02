@@ -32,6 +32,7 @@ namespace CUTeffi
         int indexP;
         double SPmax;
         int iii;
+        public double rms_vibration;
         
         public StreamWriter SW_RMSData;
         public StreamWriter SW_State;
@@ -60,7 +61,7 @@ namespace CUTeffi
             indexP = 0;
             iii = 0;
             ////
-            
+
             SW_RMSData = new StreamWriter(System.Environment.CurrentDirectory + "\\logData\\RMSData.txt");
             SW_State = new StreamWriter(System.Environment.CurrentDirectory + "\\logData\\State.txt");
             SW_State2 = new StreamWriter(System.Environment.CurrentDirectory + "\\logData\\State2.txt");
@@ -69,7 +70,7 @@ namespace CUTeffi
             {
                 if (chan[i] == 1)
                 {
-                    aiChannel = myTask.AIChannels.CreateAccelerometerChannel("cDAQ1Mod1/ai" + Convert.ToString(i), "",
+                    aiChannel = myTask.AIChannels.CreateAccelerometerChannel("cDAQ3Mod1/ai" + Convert.ToString(i), "",
                         terminalConfiguration, Vmin, Vmax, sen, sensitivityUnits, excitationSource,
                         EVN, AIAccelerationUnits.G);
                     aiChannel.Coupling = inputCoupling;
@@ -86,7 +87,7 @@ namespace CUTeffi
             analogInReader = new AnalogMultiChannelReader(myTask.Stream);
             analogCallback = new AsyncCallback(AnalogInCallback);
 
-
+            
 
             analogInReader.SynchronizeCallbacks = true;
             analogInReader.BeginReadWaveform(Convert.ToInt32(1280), analogCallback, myTask);
@@ -145,8 +146,9 @@ namespace CUTeffi
 
                 double rms_xdata = rootMeanSquare(d0)*10;
                 double rms_ydata = rootMeanSquare(d1)*10;
-                double rms_vibration = Math.Sqrt(Math.Pow(rms_xdata, 2) + Math.Pow(rms_ydata, 2));
+                rms_vibration = Math.Sqrt(Math.Pow(rms_xdata, 2) + Math.Pow(rms_ydata, 2));
 
+                CUTeffiForm.RMStextbox.Text = "" + rms_vibration;//及時RMS
 
                 ////////////////////////////FFT////////////////////////////////////////
                 //double[] d0Copy = new double[d0.Length * 10];
@@ -557,11 +559,12 @@ namespace CUTeffi
             double[] Crms = new double[vecSP.Length-1];
             for (int i = 0; i < vecSP.Length-1; i++)//vecSP.Length
             {
-                int varRange = vecLoc[2*i+1] - vecLoc[2*i];
+                int varRange = vecLoc[2*i+1] - vecLoc[2*i]; //stop index - start index
                 int varLoc1 = Convert.ToInt32(Math.Floor(varRange * 0.8));
                 int varLoc2 = Convert.ToInt32(Math.Floor(varRange * 0.1));
                 double[] arrayA = new double[varLoc1 - varLoc2 + 1];
-                Array.Copy(RMSData, vecLoc[i] - varLoc1, arrayA, 0, varLoc1 - varLoc2 + 1);
+                Array.Copy(RMSData, vecLoc[2*i] + varLoc2, arrayA, 0, varLoc1 - varLoc2 + 1);
+                //Array.Copy(RMSData, vecLoc[i] - varLoc1, arrayA, 0, varLoc1 - varLoc2 + 1);
                 double varA = rootMeanSquare(arrayA);
                 Crms[i] = varA;
             }
