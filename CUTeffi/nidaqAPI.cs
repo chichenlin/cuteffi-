@@ -11,6 +11,7 @@ using MathNet.Numerics;
 using System.IO;
 using System.Threading;
 using CUTeffi;
+using MathNet.Numerics.Statistics;
 
 namespace CUTeffi
 {
@@ -37,6 +38,8 @@ namespace CUTeffi
         public StreamWriter SW_RMSData;
         public StreamWriter SW_State;
         public StreamWriter SW_State2;
+        public StreamWriter SW_RawData;
+        public StreamWriter SW_Entropy;
 
         [STAThread]
         public void StartDAQ(double a)
@@ -65,12 +68,15 @@ namespace CUTeffi
             SW_RMSData = new StreamWriter(System.Environment.CurrentDirectory + "\\logData\\RMSData.txt");
             SW_State = new StreamWriter(System.Environment.CurrentDirectory + "\\logData\\State.txt");
             SW_State2 = new StreamWriter(System.Environment.CurrentDirectory + "\\logData\\State2.txt");
+            SW_RawData = new StreamWriter(System.Environment.CurrentDirectory + "\\logData\\RawData.txt");
+            SW_Entropy = new StreamWriter(System.Environment.CurrentDirectory + "\\logData\\Entropy.txt");
+            
 
             for (int i = 0; i < chan.Length; i++)
             {
                 if (chan[i] == 1)
                 {
-                    aiChannel = myTask.AIChannels.CreateAccelerometerChannel("cDAQ3Mod1/ai" + Convert.ToString(i), "",
+                    aiChannel = myTask.AIChannels.CreateAccelerometerChannel("cDAQ1Mod1/ai" + Convert.ToString(i), "",
                         terminalConfiguration, Vmin, Vmax, sen, sensitivityUnits, excitationSource,
                         EVN, AIAccelerationUnits.G);
                     aiChannel.Coupling = inputCoupling;
@@ -100,7 +106,8 @@ namespace CUTeffi
             SW_RMSData.Dispose();
             SW_State.Dispose();
             SW_State2.Dispose();
-
+            SW_RawData.Dispose();
+            SW_Entropy.Dispose();
 
             runningTask = null;
             myTask.Dispose();
@@ -130,10 +137,10 @@ namespace CUTeffi
                 double[] d0 = new double[d00.Length];
                 double[] d1 = new double[d10.Length];
 
-                for(int i = 0; i < d0.Length; i++)
+                for(int i = 0; i < d0.Length; i++)//去趨勢
                 {
-                    d0[i] = (d00[i] - d00.Average())*10;
-                    d1[i] = (d10[i] - d10.Average())*10;
+                    d0[i] = (d00[i] - d00.Average());
+                    d1[i] = (d10[i] - d10.Average());
                 }
 
                 for (int i = 0; i < data[0].SampleCount; i++)
@@ -144,11 +151,19 @@ namespace CUTeffi
 
                 int indexMaterial = CUTeffiForm.indexMaterial;
 
-                double rms_xdata = rootMeanSquare(d0)*10;
-                double rms_ydata = rootMeanSquare(d1)*10;
+                double rms_xdata = rootMeanSquare(d0);
+                double rms_ydata = rootMeanSquare(d1);
                 rms_vibration = Math.Sqrt(Math.Pow(rms_xdata, 2) + Math.Pow(rms_ydata, 2));
 
                 CUTeffiForm.RMStextbox.Text = "" + rms_vibration;//及時RMS
+                double[] d = new double[d0.Length];
+                for (int i = 0; i < d0.Length; i++)
+                {
+                    d[i] = Math.Pow(d0[i], 2) + Math.Pow(d1[i], 2);
+                }
+                double entropy = Statistics.Entropy(d); //????
+                CUTeffiForm.entropytextbox.Text = "" + entropy;
+                //Console.WriteLine("entropy is " + entropy);
 
                 ////////////////////////////FFT////////////////////////////////////////
                 //double[] d0Copy = new double[d0.Length * 10];
@@ -237,9 +252,10 @@ namespace CUTeffi
                 //    vecSP[i - 1] = SPmax - 250 * (13 - i - 1);//---------------------------------------------------------------------------------------------
                 //}
                 
-                
-                double threshold = CUTeffiForm.threshold;
-                if (rms_vibration > threshold) // 閥值定義：轉與不轉振動量大小
+
+                double threshold_rms = CUTeffiForm.threshold_rms;
+                double threshold_entropy = CUTeffiForm.threshold_entropy;
+                if (rms_vibration > threshold_rms) // 閥值定義：轉與不轉振動量大小
                 {
                     iii++;
                     if (iii == 10)//穩定大於閥值1秒後，紀錄當下時間
@@ -276,14 +292,22 @@ namespace CUTeffi
                     return;
                 }
                 Console.Write(indexP + "  " + vecSP[indexP] + "  " + vecTime[0] + "  " + rms_vibration + " " + iii + " ");
+                //存檔區
                 SW_RMSData.Write(vecTime[0]);
                 SW_RMSData.Write(",");
                 SW_RMSData.Write(vecSP[indexP]);
                 SW_RMSData.Write(",");
                 SW_RMSData.WriteLine(rms_vibration);
-
-
-
+                SW_Entropy.WriteLine(entropy);
+                for (int i = 0; i < d0.Length; i++)
+                {
+                    SW_RawData.Write(vecTime[i]);
+                    SW_RawData.Write(",");
+                    SW_RawData.Write(d0[i]);
+                    SW_RawData.Write(",");
+                    SW_RawData.WriteLine(d1[i]);
+                }
+                //存檔區結束
 
                 ////////////////////////////////////////////////////
                 //double[] varSPP = new double[vecSP.Length];

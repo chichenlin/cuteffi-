@@ -48,6 +48,8 @@
             this.buttonStop = new System.Windows.Forms.Button();
             this.textBox9 = new System.Windows.Forms.TextBox();
             this.panelSetting = new System.Windows.Forms.Panel();
+            this.textBox11 = new System.Windows.Forms.TextBox();
+            this.label33 = new System.Windows.Forms.Label();
             this.label32 = new System.Windows.Forms.Label();
             this.label31 = new System.Windows.Forms.Label();
             this.textBox10 = new System.Windows.Forms.TextBox();
@@ -86,6 +88,7 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.buttonExport = new System.Windows.Forms.Button();
             this.buttonSetting = new System.Windows.Forms.Button();
+            this.textBox12 = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.panelSetting.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -285,7 +288,7 @@
             // 
             this.textBox9.Location = new System.Drawing.Point(15, 368);
             this.textBox9.Name = "textBox9";
-            this.textBox9.Size = new System.Drawing.Size(100, 27);
+            this.textBox9.Size = new System.Drawing.Size(60, 27);
             this.textBox9.TabIndex = 17;
             this.textBox9.Text = "12";
             this.textBox9.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -293,6 +296,9 @@
             // panelSetting
             // 
             this.panelSetting.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelSetting.Controls.Add(this.textBox12);
+            this.panelSetting.Controls.Add(this.textBox11);
+            this.panelSetting.Controls.Add(this.label33);
             this.panelSetting.Controls.Add(this.label32);
             this.panelSetting.Controls.Add(this.label31);
             this.panelSetting.Controls.Add(this.textBox10);
@@ -332,10 +338,29 @@
             this.panelSetting.TabIndex = 2;
             this.panelSetting.Visible = false;
             // 
+            // textBox11
+            // 
+            this.textBox11.Enabled = false;
+            this.textBox11.Location = new System.Drawing.Point(292, 368);
+            this.textBox11.Name = "textBox11";
+            this.textBox11.Size = new System.Drawing.Size(100, 27);
+            this.textBox11.TabIndex = 33;
+            this.textBox11.Text = "none";
+            this.textBox11.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(288, 346);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(66, 19);
+            this.label33.TabIndex = 32;
+            this.label33.Text = "Entropy";
+            // 
             // label32
             // 
             this.label32.AutoSize = true;
-            this.label32.Location = new System.Drawing.Point(131, 346);
+            this.label32.Location = new System.Drawing.Point(169, 346);
             this.label32.Name = "label32";
             this.label32.Size = new System.Drawing.Size(43, 19);
             this.label32.TabIndex = 31;
@@ -353,7 +378,7 @@
             // textBox10
             // 
             this.textBox10.Enabled = false;
-            this.textBox10.Location = new System.Drawing.Point(135, 368);
+            this.textBox10.Location = new System.Drawing.Point(173, 368);
             this.textBox10.Name = "textBox10";
             this.textBox10.Size = new System.Drawing.Size(100, 27);
             this.textBox10.TabIndex = 30;
@@ -567,7 +592,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(283, 238);
+            this.button1.Location = new System.Drawing.Point(283, 80);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(104, 132);
             this.button1.TabIndex = 8;
@@ -617,7 +642,7 @@
             // checkBox2
             // 
             this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(292, 197);
+            this.checkBox2.Location = new System.Drawing.Point(292, 43);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(58, 23);
             this.checkBox2.TabIndex = 1;
@@ -630,7 +655,7 @@
             this.checkBox1.AutoSize = true;
             this.checkBox1.Checked = true;
             this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox1.Location = new System.Drawing.Point(292, 172);
+            this.checkBox1.Location = new System.Drawing.Point(292, 14);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(58, 23);
             this.checkBox1.TabIndex = 0;
@@ -712,6 +737,15 @@
             this.buttonSetting.TabIndex = 1;
             this.buttonSetting.UseVisualStyleBackColor = true;
             this.buttonSetting.Click += new System.EventHandler(this.buttonSetting_Click);
+            // 
+            // textBox12
+            // 
+            this.textBox12.Location = new System.Drawing.Point(96, 368);
+            this.textBox12.Name = "textBox12";
+            this.textBox12.Size = new System.Drawing.Size(60, 27);
+            this.textBox12.TabIndex = 34;
+            this.textBox12.Text = "12";
+            this.textBox12.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // CUTeffiForm
             // 
@@ -804,6 +838,9 @@
         private System.Windows.Forms.Label label31;
         private System.Windows.Forms.Label label32;
         public System.Windows.Forms.TextBox textBox10;
+        private System.Windows.Forms.TextBox textBox11;
+        private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.TextBox textBox12;
     }
 }
 

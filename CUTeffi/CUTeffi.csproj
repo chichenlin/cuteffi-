@@ -84,6 +84,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MSE.cs" />
     <Compile Include="EditNC.cs" />
     <Compile Include="CUTeffiForm.cs">
       <SubType>Form</SubType>
