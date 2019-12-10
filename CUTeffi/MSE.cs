@@ -23,18 +23,24 @@ namespace CUTeffi
         }
         public double[] croasgrain(double[] data, int scale)
         {
-            double L = data.Length;
+            double L = data.Length,sum;
             int k = 0;
             double[] Dst = new double[(data.Length-scale)/scale];
             for (int i = 0; i < L - scale; i += scale)// i = 1:scale: L - scale + 1
             {
-                Dst[k] = data[i: i + scale - 1].Average();
+                sum = 0;
+                for (int j = i; j < i+scale; j++)
+                {
+                    sum = sum + data[j];
+                }
+                Dst[k] = sum / scale;
+                //Dst[k] = data[i: i + scale - 1].Average();
                 k = k + 1;
             }
             return Dst;
         }
 
-        public double[] SampEn1(double[] data, double r)
+        public double SampEn1(double[] data, double r)
         {
             double l = data.Length;
             double Nn = 0;
@@ -43,10 +49,10 @@ namespace CUTeffi
             {
                 for (int j = 1; j < l - 1; j++) //j = i + 1:l - 2
                 {
-                    if (Math.Abs(data(i) - data(j)) < r && Math.Abs(data(i + 1) - data(j + 1)) < r)
+                    if (Math.Abs(data[i] - data[j]) < r && Math.Abs(data[i + 1] - data[j + 1]) < r)
                     {
                         Nn = Nn + 1;
-                        if (Math.Abs(data(i + 2) - data(j + 2)) < r)
+                        if (Math.Abs(data[i + 2] - data[j + 2]) < r)
                         {
                             Nd = Nd + 1;
                         }
