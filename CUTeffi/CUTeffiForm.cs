@@ -26,7 +26,8 @@ namespace CUTeffi
         public static int varNtest = 12;
         public static double threshold_rms,threshold_entropy;
         public static double entropy;
-        public static TextBox RMStextbox , entropytextbox;//及時RMS,entropy
+        public static TextBox RMStextbox, entropytextbox, partbox;//及時RMS,entropy
+        public static CheckBox material_Al,material_Iron;
 
 
         //public static StreamWriter SW_RMSData;
@@ -46,6 +47,9 @@ namespace CUTeffi
             panelSetting.Location = new Point(0, 50);
             RMStextbox = this.textBox10;//及時RMS
             entropytextbox = this.textBox11;//及時entropy
+            partbox = this.textBox13;
+            material_Al = this.checkBox3;
+            material_Iron = this.checkBox4;
             initialCUTeffi();
            
         }
@@ -91,7 +95,8 @@ namespace CUTeffi
             //SW_RMSData = new StreamWriter(System.Environment.CurrentDirectory + "\\logData\\RMSData.txt");
             //SW_State = new StreamWriter(System.Environment.CurrentDirectory + "\\logData\\State.txt");
             //MWArray[] result = initialDAQ.NIDAQ(2, 1, Convert.ToDouble(textBox1.Text));
-
+      
+            
             //Array myshowResult1 = result[0].ToArray();
             //Array myshowResult2 = result[1].ToArray();
 
@@ -101,6 +106,19 @@ namespace CUTeffi
 
             indexProgramState = 2;
             statepanel(indexProgramState);
+            //期限功能
+            DateTime GetNowTime = DateTime.Today;
+            DateTime ShotdownTime = new DateTime(2020, 01, 31);
+            if (DateTime.Compare(GetNowTime, ShotdownTime) > 0)
+            {
+                this.Close();
+                MessageBox.Show("使用期限已過("+ ShotdownTime+")");
+                Environment.Exit(Environment.ExitCode);
+            }
+            else 
+            {
+                //MessageBox.Show("使用期限(" + ShotdownTime + ")"); 
+            }
         }
 
 
@@ -126,7 +144,7 @@ namespace CUTeffi
             indexProgramState = 1;
             statepanel(indexProgramState);
             Refresh();
-
+          
             OperatingSPmax = Convert.ToDouble(textBox4.Text);
             //SW_RMSData = new StreamWriter(System.Environment.CurrentDirectory + "\\logData\\RMSData.txt");
             //SW_State = new StreamWriter(System.Environment.CurrentDirectory + "\\logData\\State.txt");
@@ -175,7 +193,16 @@ namespace CUTeffi
 
         private void buttonSetting_Click(object sender, EventArgs e)
         {
-            if(indexPanelSetting == 0) {
+            if (checkBox3.Checked ==true)
+            {
+                if (Convert.ToDouble(textBox4.Text) < 6000)
+                {
+                    MessageBox.Show("請將轉速設定大於6000RPM");
+                    return;
+                }
+            }
+            
+            if (indexPanelSetting == 0) {
                 panelSetting.Visible = true;
                 indexPanelSetting = 1;
             }
@@ -236,29 +263,38 @@ namespace CUTeffi
             if (string.IsNullOrEmpty(textBox4.Text)) { }
             else
             {
-                if (Convert.ToDouble(textBox4.Text) > Convert.ToDouble(textBox1.Text))
-                {
-                    textBox4.Text = Convert.ToString(Convert.ToDouble(textBox1.Text) * 0.9);
-                    if (Convert.ToDouble(textBox4.Text) - (varNtest - 1) * 250 > 0)
-                    {
-                        textBox2.Text = Convert.ToString(Convert.ToDouble(textBox4.Text) - ( (varNtest - 1) * 250));
-                    }
-                    else
-                    {
-                        textBox2.Text = "0";
-                    }
-                }
+                if (checkBox4.Checked == true) { }
                 else
                 {
-                    if (Convert.ToDouble(textBox4.Text) - (varNtest - 1) * 250 > 0)
+                    if (Convert.ToDouble(textBox4.Text) > Convert.ToDouble(textBox1.Text))
                     {
-                        textBox2.Text = Convert.ToString(Convert.ToDouble(textBox4.Text) - (varNtest - 1) * 250);
+                        textBox4.Text = Convert.ToString(Convert.ToDouble(textBox1.Text) * 0.9);
+                        if (Convert.ToDouble(textBox4.Text) - (varNtest - 1) * 250 > 0)
+                        {
+                            textBox2.Text = Convert.ToString(Convert.ToDouble(textBox4.Text) - ((varNtest - 1) * 250));
+                        }
+                        else
+                        {
+                            textBox2.Text = "0";
+                        }
                     }
                     else
                     {
-                        textBox2.Text = "0";
+                        if (Convert.ToDouble(textBox4.Text) - (varNtest - 1) * 250 > 0)
+                        {
+                            textBox2.Text = Convert.ToString(Convert.ToDouble(textBox4.Text) - (varNtest - 1) * 250);
+                        }
+                        else
+                        {
+                            textBox2.Text = "0";
+                        }
                     }
+                    //if (Convert.ToDouble(textBox4.Text) <6000)
+                    //{
+                    //    textBox4.Text = Convert.ToString(6000);
+                    //}
                 }
+                
             }
             
 
@@ -286,6 +322,7 @@ namespace CUTeffi
         private void CUTeffi_FormClosed(object sender, FormClosedEventArgs e)
         {
             FSS.Close();
+       
         }
 
         private void CUTeffi_Shown(object sender, EventArgs e)
@@ -296,18 +333,18 @@ namespace CUTeffi
        
 
 
-        //--------------------------------------------------------------------------------------------------------------//
-        //------------------------------------- Function of root mean square ---------------------------------------//
-        //-------------------------------------------------------------------------------------------------------------//
-        private static double rootMeanSquare(double[] x)
-        {
-            double sum = 0;
-            for (int i = 0; i < x.Length; i++)
-            {
-                sum += (x[i] * x[i]);
-            }
-            return Math.Sqrt(sum / x.Length);
-        }
+        ////--------------------------------------------------------------------------------------------------------------//
+        ////------------------------------------- Function of root mean square ---------------------------------------//
+        ////-------------------------------------------------------------------------------------------------------------//
+        //private static double rootMeanSquare(double[] x)
+        //{
+        //    double sum = 0;
+        //    for (int i = 0; i < x.Length; i++)
+        //    {
+        //        sum += (x[i] * x[i]);
+        //    }
+        //    return Math.Sqrt(sum / x.Length);
+        //}
 
 
         //--------------------------------------------------------------------------------------------------------------//
@@ -376,6 +413,15 @@ namespace CUTeffi
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (checkBox3.Checked==true)
+            {
+                if (Convert.ToDouble(textBox4.Text) < 6000)
+                {
+                    MessageBox.Show("請將轉速設定大於6000RPM");
+                    return;
+                }
+            }
+           
             string s = Application.StartupPath;////
 
             SaveFileDialog sfd = new SaveFileDialog();
@@ -435,19 +481,20 @@ namespace CUTeffi
 
         private void checkBox4_Click(object sender, EventArgs e)
         {
+            textBox2.Text = "1000";
+            textBox4.Text = "3200";
+            checkBox1.Checked = false;
             checkBox3.Checked = false;
             checkBox4.Checked = true;
             indexMaterial = 2;
-
-
             checkBox1.Enabled = false;
             checkBox2.Enabled = false;
+            textBox1.Enabled = false;
             textBox2.Enabled = false;
-            textBox3.Enabled = false;
+            textBox3.Enabled = true;
             textBox4.Enabled = false;
 
-            textBox2.Text = "800";
-            textBox4.Text = "3000";
+           
             
         }
 

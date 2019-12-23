@@ -51,6 +51,9 @@
     <ApplicationIcon>icon_CUTeffi.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AGauge, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AGauge_V2.2.0.2\lib\AGauge.dll</HintPath>
+    </Reference>
     <Reference Include="MathNet.Numerics, Version=4.8.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MathNet.Numerics.4.8.1\lib\net461\MathNet.Numerics.dll</HintPath>
     </Reference>
@@ -64,7 +67,7 @@
     </Reference>
     <Reference Include="NationalInstruments.DAQmx, Version=19.5.45.0, Culture=neutral, PublicKeyToken=4febd62461bf11a4, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\NationalInstruments.DAQmx.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\National Instruments\MeasurementStudioVS2012\DotNET\Assemblies (64-bit)\Current\NationalInstruments.DAQmx.dll</HintPath>
     </Reference>
     <Reference Include="NIDAQ">
       <HintPath>.\NIDAQ.dll</HintPath>

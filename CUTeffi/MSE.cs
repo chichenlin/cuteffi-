@@ -8,10 +8,10 @@ namespace CUTeffi
 {
     public class MultiScale_Entropy
     {
-        public double[] MultiScaleEn3(double[] data, int scale)
+        public static double[] MultiScaleEn3(double[] data, int scale)
         {
             double[] MSE = new double[scale];
-            double[] buf = new double[(data.Length-scale)/scale];
+            double[] buf = new double[(data.Length)/scale];
             double r = 0.15 * STD(data);
             for (int i = 0; i < scale; i++)
             {
@@ -21,38 +21,38 @@ namespace CUTeffi
             return MSE;
             //% 重複疊到的尺度訊號進行SE計算後取平均的MSE
         }
-        public double[] croasgrain(double[] data, int scale)
+        public static double[] croasgrain(double[] buf, int scale)
         {
-            double L = data.Length,sum;
+            double L = buf.Length,sum;
             int k = 0;
-            double[] Dst = new double[(data.Length-scale)/scale];
-            for (int i = 0; i < L - scale; i += scale)// i = 1:scale: L - scale + 1
+            double[] Dst = new double[buf.Length/(scale+1)];
+            for (int i = 0; i < L - scale; i += (scale+1))// i = 1:scale: L - scale + 1
             {
                 sum = 0;
-                for (int j = i; j < i+scale; j++)
+                for (int j = i; j < i+scale+1; j++)
                 {
-                    sum = sum + data[j];
+                    sum = sum + buf[j];
                 }
-                Dst[k] = sum / scale;
+                Dst[k] = sum / (1+scale);
                 //Dst[k] = data[i: i + scale - 1].Average();
                 k = k + 1;
             }
             return Dst;
         }
 
-        public double SampEn1(double[] data, double r)
+        public static double SampEn1(double[] SE, double r)
         {
-            double l = data.Length;
+            double l = SE.Length;
             double Nn = 0;
             double Nd = 0;
-            for (int i = 0; i < l - 1; i++)//i = 1:l - 2
+            for (int i = 0; i < l - 2; i++)//i = 1:l - 2
             {
-                for (int j = 1; j < l - 1; j++) //j = i + 1:l - 2
+                for (int j = 1; j < l - 2; j++) //j = i + 1:l - 2
                 {
-                    if (Math.Abs(data[i] - data[j]) < r && Math.Abs(data[i + 1] - data[j + 1]) < r)
+                    if (Math.Abs(SE[i] - SE[j]) < r && Math.Abs(SE[i + 1] - SE[j + 1]) < r)
                     {
                         Nn = Nn + 1;
-                        if (Math.Abs(data[i + 2] - data[j + 2]) < r)
+                        if (Math.Abs(SE[i + 2] - SE[j + 2]) < r)
                         {
                             Nd = Nd + 1;
                         }
@@ -62,7 +62,7 @@ namespace CUTeffi
             double entropy = -Math.Log(Nd / Nn);
             return entropy;
         }
-        public double STD(double[] num)
+        public static double STD(double[] num)
         {
             double avg = num.Average();
 

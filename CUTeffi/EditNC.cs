@@ -4,19 +4,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using CUTeffi;
 
 namespace CUTeffi
 {
     class EditNC
     {
         List<string> NCi = new List<string>();
-
+        public StreamReader sr;
 
         public void editNC(double maxSP, double CuttingDepth, double ToolNumber, string s, string saveNC) {
-            
-            //string fileName = "D4000426_2.cnc";
 
-            StreamReader sr = new StreamReader(s + "\\NC\\O7202.txt");////
+            //string fileName = "D4000426_2.cnc";
+            if (CUTeffiForm.material_Al.Checked == true)
+            {
+                sr = new StreamReader(s + "\\NC\\O7202forAL2.txt");////
+            }
+            if (CUTeffiForm.material_Iron.Checked == true)
+            {
+                sr = new StreamReader(s + "\\NC\\O7202forIron.txt");////
+            }
+            //StreamReader sr = new StreamReader(s + "\\NC\\O7202.txt");////
 
             while (!sr.EndOfStream)
             {

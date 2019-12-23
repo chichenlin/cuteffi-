@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CUTeffiForm));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.textBox13 = new System.Windows.Forms.TextBox();
             this.label28 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
             this.label26 = new System.Windows.Forms.Label();
@@ -48,6 +49,7 @@
             this.buttonStop = new System.Windows.Forms.Button();
             this.textBox9 = new System.Windows.Forms.TextBox();
             this.panelSetting = new System.Windows.Forms.Panel();
+            this.textBox12 = new System.Windows.Forms.TextBox();
             this.textBox11 = new System.Windows.Forms.TextBox();
             this.label33 = new System.Windows.Forms.Label();
             this.label32 = new System.Windows.Forms.Label();
@@ -88,7 +90,6 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.buttonExport = new System.Windows.Forms.Button();
             this.buttonSetting = new System.Windows.Forms.Button();
-            this.textBox12 = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.panelSetting.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -100,6 +101,7 @@
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.textBox13);
             this.panel1.Controls.Add(this.label28);
             this.panel1.Controls.Add(this.label27);
             this.panel1.Controls.Add(this.label26);
@@ -120,6 +122,17 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(400, 400);
             this.panel1.TabIndex = 0;
+            // 
+            // textBox13
+            // 
+            this.textBox13.Enabled = false;
+            this.textBox13.Font = new System.Drawing.Font("微軟正黑體", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.textBox13.Location = new System.Drawing.Point(4, 14);
+            this.textBox13.Name = "textBox13";
+            this.textBox13.Size = new System.Drawing.Size(100, 33);
+            this.textBox13.TabIndex = 17;
+            this.textBox13.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox13.Visible = false;
             // 
             // label28
             // 
@@ -290,8 +303,9 @@
             this.textBox9.Name = "textBox9";
             this.textBox9.Size = new System.Drawing.Size(60, 27);
             this.textBox9.TabIndex = 17;
-            this.textBox9.Text = "12";
+            this.textBox9.Text = "0.25";
             this.textBox9.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textBox9.Visible = false;
             // 
             // panelSetting
             // 
@@ -338,6 +352,16 @@
             this.panelSetting.TabIndex = 2;
             this.panelSetting.Visible = false;
             // 
+            // textBox12
+            // 
+            this.textBox12.Location = new System.Drawing.Point(96, 368);
+            this.textBox12.Name = "textBox12";
+            this.textBox12.Size = new System.Drawing.Size(60, 27);
+            this.textBox12.TabIndex = 34;
+            this.textBox12.Text = "12";
+            this.textBox12.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textBox12.Visible = false;
+            // 
             // textBox11
             // 
             this.textBox11.Enabled = false;
@@ -347,6 +371,7 @@
             this.textBox11.TabIndex = 33;
             this.textBox11.Text = "none";
             this.textBox11.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textBox11.Visible = false;
             // 
             // label33
             // 
@@ -356,6 +381,7 @@
             this.label33.Size = new System.Drawing.Size(66, 19);
             this.label33.TabIndex = 32;
             this.label33.Text = "Entropy";
+            this.label33.Visible = false;
             // 
             // label32
             // 
@@ -365,6 +391,7 @@
             this.label32.Size = new System.Drawing.Size(43, 19);
             this.label32.TabIndex = 31;
             this.label32.Text = "RMS";
+            this.label32.Visible = false;
             // 
             // label31
             // 
@@ -374,6 +401,7 @@
             this.label31.Size = new System.Drawing.Size(79, 19);
             this.label31.TabIndex = 31;
             this.label31.Text = "threshold";
+            this.label31.Visible = false;
             // 
             // textBox10
             // 
@@ -384,6 +412,7 @@
             this.textBox10.TabIndex = 30;
             this.textBox10.Text = "none";
             this.textBox10.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textBox10.Visible = false;
             // 
             // checkBox4
             // 
@@ -579,7 +608,7 @@
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(59, 25);
             this.textBox3.TabIndex = 10;
-            this.textBox3.Text = "1.5";
+            this.textBox3.Text = "0.5";
             // 
             // textBox2
             // 
@@ -592,7 +621,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(283, 80);
+            this.button1.Location = new System.Drawing.Point(283, 207);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(104, 132);
             this.button1.TabIndex = 8;
@@ -738,15 +767,6 @@
             this.buttonSetting.UseVisualStyleBackColor = true;
             this.buttonSetting.Click += new System.EventHandler(this.buttonSetting_Click);
             // 
-            // textBox12
-            // 
-            this.textBox12.Location = new System.Drawing.Point(96, 368);
-            this.textBox12.Name = "textBox12";
-            this.textBox12.Size = new System.Drawing.Size(60, 27);
-            this.textBox12.TabIndex = 34;
-            this.textBox12.Text = "12";
-            this.textBox12.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
             // CUTeffiForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -832,8 +852,6 @@
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.Button buttonStop;
         private System.Windows.Forms.Label label30;
-        private System.Windows.Forms.CheckBox checkBox4;
-        private System.Windows.Forms.CheckBox checkBox3;
         private System.Windows.Forms.TextBox textBox9;
         private System.Windows.Forms.Label label31;
         private System.Windows.Forms.Label label32;
@@ -841,6 +859,9 @@
         private System.Windows.Forms.TextBox textBox11;
         private System.Windows.Forms.Label label33;
         private System.Windows.Forms.TextBox textBox12;
+        private System.Windows.Forms.TextBox textBox13;
+        public System.Windows.Forms.CheckBox checkBox4;
+        public System.Windows.Forms.CheckBox checkBox3;
     }
 }
 
