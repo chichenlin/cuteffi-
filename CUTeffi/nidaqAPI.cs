@@ -76,7 +76,7 @@ namespace CUTeffi
             {
                 if (chan[i] == 1)
                 {
-                    aiChannel = myTask.AIChannels.CreateAccelerometerChannel("cDAQ2Mod1/ai" + Convert.ToString(i), "",
+                    aiChannel = myTask.AIChannels.CreateAccelerometerChannel("cDAQ1Mod1/ai" + Convert.ToString(i), "",
                         terminalConfiguration, Vmin, Vmax, sen, sensitivityUnits, excitationSource,
                         EVN, AIAccelerationUnits.G);
                     aiChannel.Coupling = inputCoupling;

@@ -13,12 +13,12 @@ namespace CUTeffi
         List<string> NCi = new List<string>();
         public StreamReader sr;
 
-        public void editNC(double maxSP, double CuttingDepth, double ToolNumber, string s, string saveNC) {
+        public void editNC(double maxSP, double CuttingDepth, double ToolNumber,double mmperflute,double flutenumber,string s, string saveNC) {
 
             //string fileName = "D4000426_2.cnc";
             if (CUTeffiForm.material_Al.Checked == true)
             {
-                sr = new StreamReader(s + "\\NC\\O7202forAL2.txt");////
+                sr = new StreamReader(s + "\\NC\\O7202forAL3.txt");////
             }
             if (CUTeffiForm.material_Iron.Checked == true)
             {
@@ -43,7 +43,7 @@ namespace CUTeffi
 
             }
 
-            EidtNc(maxSP, CuttingDepth, ToolNumber);
+            EidtNc(maxSP, CuttingDepth, ToolNumber, mmperflute, flutenumber);
 
             writeNC(saveNC);
 
@@ -52,7 +52,7 @@ namespace CUTeffi
             ////str.Close(); 
         }
 
-        private void EidtNc(double maxSP, double CuttingDepth, double ToolNumber)
+        private void EidtNc(double maxSP, double CuttingDepth, double ToolNumber, double mmperflute, double flutenumber)
         {
             string[] split;
 
@@ -96,6 +96,24 @@ namespace CUTeffi
                         {
 
                             line = "#" + filter[ii] + "=" + Convert.ToString(ToolNumber) + "(" + filter[ii + 2];////
+
+                            NCi[i] = line;
+
+
+                        }
+                        if (ii == 1 & filter[ii] == "4")
+                        {
+
+                            line = "#" + filter[ii] + "=" + Convert.ToString(mmperflute) + "(" + filter[ii + 2];////
+
+                            NCi[i] = line;
+
+
+                        }
+                        if (ii == 1 & filter[ii] == "5")
+                        {
+
+                            line = "#" + filter[ii] + "=" + Convert.ToString(flutenumber) + "(" + filter[ii + 2];////
 
                             NCi[i] = line;
 
